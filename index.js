@@ -24,6 +24,23 @@ app.get('/api/hello', function (req, res) {
   res.json({ greeting: 'hello API' });
 });
 
+// A request to /api/whoami should 
+//-return a JSON object with your IP address in the ipaddress key.
+//-return a JSON object with your preferred language in the language key.
+//-return a JSON object with your software in the software key.
+
+app.get('/api/whoami', function (req, res) {
+  // console.log(req)
+  let responseObj = {};
+  let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  responseObj.ipaddress = ip,
+  responseObj.language = req.acceptsLanguages(),
+  responseObj.software = req.headers['sec-ch-ua-platform'],
+  console.log(responseObj);
+  return res.json(responseObj);
+  // res.json({ greeting: 'hello API' });
+});
+
 // listen for requests :)
 var listener = app.listen(process.env.PORT || 3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
